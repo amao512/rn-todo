@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, FlatList, Alert } from 'react-native'
-import Navbar from './src/Navbar';
-import Input from './src/Input';
-import Todo from './src/Todo';
+import { View, Alert, StyleSheet } from 'react-native'
+import { Navbar } from './src/components/Navbar'
+import { MainScreen } from './src/screens/MainScreen'
+import { TodoScreen } from './src/screens/TodoScreen'
 
 export default function App() {
+  const [todoId, setTodoId] = useState('123')
   const [todos, setTodos] = useState([])
   
   const addTodo = text => {
@@ -19,40 +20,35 @@ export default function App() {
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
   }
 
+  let content = <MainScreen 
+                  todos={todos} 
+                  addTodo={addTodo} 
+                  removeTodo={removeTodo} 
+                  openTodo={setTodoId}
+                />
+
+  if(todoId){
+    const todo = todos.find(todo => todo.id === todoId)
+    content = <TodoScreen todo={todo} goBack={() => setTodoId(null)} />
+  }
+
   return (
     <View>
       <StatusBar style="auto" backgroundColor={'#d2d2d2'} />
-      <Navbar />
+        <Navbar />
 
       <View style={styles.container}>
-        <Input addTodo={addTodo} />
-
-        <FlatList
-          data={todos}
-          renderItem={({item}) => (
-            <Todo todo={item} removeTodo={removeTodo} />
-          )}
-          keyExtractor={todo => todo.id.toString()}
-          style={styles.todos}
-        />
-        { todos.length === 0 && <Text style={styles.noTodos}>No any todos!</Text> }
+        { content }
       </View>
+        
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
     paddingLeft: 15,
-    paddingRight: 15,
-  },
-  todos: {
-    marginTop: 10
-  },
-  noTodos: {
-    justifyContent: 'center',
-    padding: 15,
-    color: 'red'
+    paddingRight: 15
   }
 })

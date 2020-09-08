@@ -1,9 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-const Todo = ({ todo, removeTodo }) => {
+export const Todo = ({ todo, removeTodo, openTodo }) => {
     return (
-        <TouchableOpacity activeOpacity={0.5} onPress={() => removeTodo(todo.id)}>
+        <TouchableOpacity 
+            activeOpacity={0.5} 
+            onLongPress={() => removeTodo(todo.id)}
+            onPress={() => openTodo(todo.id)}
+        >
             <View style={styles.todo}>
                 <Text>{todo.text}</Text>
             </View>
@@ -20,5 +24,3 @@ const styles = StyleSheet.create({
         marginTop: 10
     }
 })
-
-export default Todo

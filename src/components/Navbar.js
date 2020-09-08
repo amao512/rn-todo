@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 
-const Navbar = () => {
+export const Navbar = () => {
     return (
         <View style={styles.navbar}>
             <Text style={styles.navbarLogo}>TODO</Text>
@@ -22,5 +22,3 @@ const styles = StyleSheet.create({
         fontSize: 24,
     }
 })
-
-export default Navbar

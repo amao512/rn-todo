@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, TextInput, Button, StyleSheet } from 'react-native'
 
-const Input = ({ addTodo }) => {
+export const AddTodo = ({ addTodo }) => {
     const [value, setValue] = useState('')
 
     const onPress = () => {
@@ -38,5 +38,3 @@ const styles = StyleSheet.create({
         marginTop: 10
     }
 })
-
-export default Input
