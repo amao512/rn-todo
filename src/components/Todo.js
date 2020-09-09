@@ -10,7 +10,7 @@ export const Todo = ({ todo, removeTodo, openTodo }) => {
             onPress={() => openTodo(todo.id)}
         >
             <View style={styles.todo}>
-                <Text>{todo.text}</Text>
+                <Text>{todo.title}</Text>
             </View>
         </TouchableOpacity>
     )

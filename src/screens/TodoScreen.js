@@ -7,7 +7,7 @@ export const TodoScreen = ({ todo, goBack, removeTodo }) => {
     return (
         <View>
             <AppCard style={styles.todo}>
-                <Text style={styles.text}>{todo.text}</Text>
+                <Text style={styles.title}>{todo.title}</Text>
 
                 <View style={styles.buttons}>
                     <View style={styles.button}>
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     todo: {
         marginBottom: 20
     },
-    text: {
+    title: {
         fontSize: 24,
         textAlign: 'center'
     },

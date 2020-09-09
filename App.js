@@ -10,16 +10,38 @@ export default function App() {
   const [todoId, setTodoId] = useState(null)
   const [todos, setTodos] = useState([])
   
-  const addTodo = text => {
-    if(!text.trim()){
-      return Alert.alert('Input is empty!')
+  const addTodo = title => {
+    if(!title.trim()){
+      return Alert.alert(
+        'Строка пустая',
+        'Пожалуйста напишите что-нибудь!'
+      )
     }
-    setTodos(prevTodos => [...prevTodos, { id: Date.now(), text }])
+
+    setTodos(prevTodos => [...prevTodos, { id: Date.now(), title }])
   }
 
   const removeTodo = id => {
-    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
-    setTodoId(null)
+    const todo = todos.find(todo => todo.id === id)
+
+    Alert.alert(
+      'Удаление элемента',
+      `Вы уверены что хотите удалить "${todo.title}"`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Remove',
+          onPress: () => {
+            setTodoId(null)
+            setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
+          }
+        }
+      ],
+      { cancelable: false }
+    )
   }
 
   let content = <MainScreen 
@@ -31,7 +53,11 @@ export default function App() {
 
   if(todoId){
     const todo = todos.find(todo => todo.id === todoId)
-    content = <TodoScreen todo={todo} goBack={() => setTodoId(null)} removeTodo={removeTodo} />
+    content = <TodoScreen 
+                todo={todo} 
+                goBack={() => setTodoId(null)} 
+                removeTodo={removeTodo} 
+              />
   }
 
   return (
