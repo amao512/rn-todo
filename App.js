@@ -4,9 +4,10 @@ import { View, Alert, StyleSheet } from 'react-native'
 import { Navbar } from './src/components/Navbar'
 import { MainScreen } from './src/screens/MainScreen'
 import { TodoScreen } from './src/screens/TodoScreen'
+import { THEME } from './src/theme'
 
 export default function App() {
-  const [todoId, setTodoId] = useState('123')
+  const [todoId, setTodoId] = useState(null)
   const [todos, setTodos] = useState([])
   
   const addTodo = text => {
@@ -18,6 +19,7 @@ export default function App() {
 
   const removeTodo = id => {
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
+    setTodoId(null)
   }
 
   let content = <MainScreen 
@@ -29,12 +31,12 @@ export default function App() {
 
   if(todoId){
     const todo = todos.find(todo => todo.id === todoId)
-    content = <TodoScreen todo={todo} goBack={() => setTodoId(null)} />
+    content = <TodoScreen todo={todo} goBack={() => setTodoId(null)} removeTodo={removeTodo} />
   }
 
   return (
     <View>
-      <StatusBar style="auto" backgroundColor={'#d2d2d2'} />
+      <StatusBar style="auto" backgroundColor={THEME.MAIN_COLOR} />
         <Navbar />
 
       <View style={styles.container}>
