@@ -4,12 +4,22 @@ import { THEME } from '../theme'
 import { AppCard } from '../components/ui/AppCard'
 import { EditModal } from '../components/EditModal'
 
-export const TodoScreen = ({ todo, goBack, removeTodo }) => {
+export const TodoScreen = ({ todo, goBack, removeTodo, onSave }) => {
     const [modal, setModal] = useState(false)
+
+    const saveHandler = title => {
+        onSave(todo.id, title)
+        setModal(false)
+    }
 
     return (
         <View>
-            <EditModal visible={modal} cancelModal={setModal} text={todo.title} />
+            <EditModal 
+                visible={modal} 
+                onCancel={setModal} 
+                value={todo.title}
+                onSave={saveHandler}
+            />
 
             <AppCard style={styles.todo}>
                 <Text style={styles.title}>{todo.title}</Text>

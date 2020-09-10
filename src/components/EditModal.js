@@ -1,18 +1,26 @@
 import React, { useState } from 'react'
-import { Modal, View, TextInput, Button, StyleSheet } from 'react-native'
+import { Modal, View, TextInput, Button, StyleSheet, Alert } from 'react-native'
 import { THEME } from '../theme'
 
-export const EditModal = ({ visible, cancelModal, text }) => {
-    const [value, setValue] = useState(text)
+export const EditModal = ({ visible, onCancel, value, onSave }) => {
+    const [title, setTitle] = useState(value)
+
+    const saveHandler = () => {
+        if(!title.trim()){
+            Alert.alert('Пустая строка', 'Пожалуйста напишите что-нибудь!')
+        } else {
+            onSave(title)
+        }
+    }
 
     return (
-        <Modal visible={visible} animationType='slide'>
+        <Modal visible={visible} animationType='slide' transparent={false}>
             <View style={styles.wrap}>
-                <TextInput style={styles.input} value={value} onChangeText={t => setValue(t)} />
+                <TextInput style={styles.input} value={title} onChangeText={text => setTitle(text)} />
                 
                 <View style={styles.buttons}>
-                    <Button title='Cancel' color={THEME.DANGER_COLOR} onPress={() => cancelModal(false)} />
-                    <Button title='Save' />
+                    <Button title='Cancel' color={THEME.DANGER_COLOR} onPress={() => onCancel(false)} />
+                    <Button title='Save' onPress={saveHandler}/>
                 </View>
             </View>
         </Modal>
