@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { THEME } from '../theme'
+import { AppCard } from './ui/AppCard'
 
 export const Todo = ({ todo, removeTodo, openTodo }) => {
     return (
@@ -18,10 +19,16 @@ export const Todo = ({ todo, removeTodo, openTodo }) => {
 
 const styles = StyleSheet.create({
     todo: {
-        borderStyle: 'solid',
-        borderColor: THEME.MAIN_COLOR,
-        borderWidth: 1,
-        padding: 10,
-        marginTop: 10
+        padding: 20,
+        marginBottom: 10,
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowRadius: 2,
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 2, height: 2 },
+        elevation: 2,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        margin: 2
     }
 })
