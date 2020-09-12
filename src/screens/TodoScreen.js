@@ -4,6 +4,8 @@ import { THEME } from '../theme'
 import { AppCard } from '../components/ui/AppCard'
 import { EditModal } from '../components/EditModal'
 import { AppText } from '../components/ui/AppText'
+import { AppButton } from '../components/ui/AppButton'
+import { MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons'
 
 export const TodoScreen = ({ todo, goBack, removeTodo, onSave }) => {
     const [modal, setModal] = useState(false)
@@ -27,16 +29,22 @@ export const TodoScreen = ({ todo, goBack, removeTodo, onSave }) => {
 
                 <View style={styles.buttons}>
                     <View style={styles.button}>
-                        <Button title='Edit' onPress={() => setModal(true)} />
+                        <AppButton onPress={() => setModal(true)}>
+                            <MaterialCommunityIcons name="square-edit-outline" size={20} color="#fff" />
+                        </AppButton>
                     </View>
                     <View style={styles.button}>
-                        <Button color={THEME.DANGER_COLOR} title='Remove' onPress={() => removeTodo(todo.id)} />
+                        <AppButton color={THEME.DANGER_COLOR} onPress={() => removeTodo(todo.id)}>
+                            <FontAwesome name="remove" size={20} color="#fff" />
+                        </AppButton>
                     </View>
                 </View>
                 
             </AppCard>
             
-            <Button color={THEME.GREY_COLOR} title='Back' onPress={goBack} />
+            <AppButton color={THEME.GREY_COLOR} onPress={goBack}>
+                <AntDesign name="back" size={20} color="#fff" />
+            </AppButton>
         </View>
     )
 }

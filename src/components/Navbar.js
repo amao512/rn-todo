@@ -22,5 +22,6 @@ const styles = StyleSheet.create({
     navbarLogo: {
         color: '#fff',
         fontSize: 24,
+        fontFamily: 'roboto-bold'
     }
 })
