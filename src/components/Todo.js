@@ -11,7 +11,7 @@ export const Todo = ({ todo, removeTodo, openTodo }) => {
             onPress={() => openTodo(todo.id)}
         >
             <View style={styles.todo}>
-                <Text>{todo.title}</Text>
+                <Text style={styles.text}>{todo.title}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -30,5 +30,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 10,
         margin: 2
+    },
+    text: {
+        fontFamily: 'roboto-bold'
     }
 })
