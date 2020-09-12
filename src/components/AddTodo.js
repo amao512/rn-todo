@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { View, TextInput, Button, StyleSheet } from 'react-native'
+import { View, TextInput, Button, StyleSheet, Keyboard } from 'react-native'
 import { THEME } from '../theme'
+import { AntDesign } from '@expo/vector-icons'
 
 export const AddTodo = ({ addTodo }) => {
     const [value, setValue] = useState('')
@@ -8,6 +9,7 @@ export const AddTodo = ({ addTodo }) => {
     const onPress = () => {
         addTodo(value)
         setValue('')
+        Keyboard.dismiss()
     }
 
     return (
@@ -18,7 +20,10 @@ export const AddTodo = ({ addTodo }) => {
                 value={value}
                 onChangeText={text => setValue(text)}
             />
-            <Button onPress={onPress} color={THEME.MAIN_COLOR} style={styles.button} title="add" />
+            <AntDesign.Button onPress={onPress} color={THEME.MAIN_COLOR} name="pluscircleo" size={24}  >
+                Add
+            </AntDesign.Button>
+            {/* <Button onPress={onPress} color={THEME.MAIN_COLOR} style={styles.button} title="add" /> */}
         </View>
     )
 }
