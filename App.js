@@ -15,7 +15,6 @@ const loadApplication = async () => {
   })
 }
 
-
 export default function App() {
   const [isReady, setIsReady] = useState(false)
   const [todoId, setTodoId] = useState(null)

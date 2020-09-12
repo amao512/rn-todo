@@ -1,24 +1,30 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { THEME } from '../theme'
-import { AppCard } from './ui/AppCard'
+import React, { useState } from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { AppTextBold } from '../components/ui/AppTextBold'
 
 export const Todo = ({ todo, removeTodo, openTodo }) => {
+    const [deleting, setDeleting] = useState(false)
+
+    const onRemove = () => {
+        setDeleting(true)
+        removeTodo(todo.id)
+    }
+
     return (
         <TouchableOpacity 
             activeOpacity={0.5} 
-            onLongPress={() => removeTodo(todo.id)}
+            onLongPress={onRemove}
             onPress={() => openTodo(todo.id)}
         >
-            <View style={styles.todo}>
-                <Text style={styles.text}>{todo.title}</Text>
+            <View style={styles.todo(deleting)}>
+                <AppTextBold style={styles.text}>{todo.title}</AppTextBold>
             </View>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    todo: {
+    todo: (deleting) => ({
         padding: 20,
         marginBottom: 10,
         justifyContent: 'space-between',
@@ -27,10 +33,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowOffset: { width: 2, height: 2 },
         elevation: 2,
-        backgroundColor: '#fff',
+        backgroundColor: !deleting ? '#fff' : 'red',
         borderRadius: 10,
         margin: 2
-    },
+    }),
     text: {
         fontFamily: 'roboto-bold'
     }
