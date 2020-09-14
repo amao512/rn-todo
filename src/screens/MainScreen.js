@@ -1,11 +1,24 @@
-import React from 'react'
-import { View, FlatList, StyleSheet, Image } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, FlatList, StyleSheet, Image, Dimensions } from 'react-native'
 import { AddTodo } from '../components/AddTodo'
 import { Todo } from '../components/Todo'
+import { THEME } from '../theme'
 
 export const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
+    const [deviceWidth, setDeviceWidth] = useState(Dimensions.get('window').width - THEME.PADDING_HORIZONTAL * 2)
 
-    let content = <View style={styles.todoList}>
+    useEffect(() => {
+        const update = () => {
+            const width = Dimensions.get('window').width - THEME.PADDING_HORIZONTAL * 2
+            setDeviceWidth(width)
+        }
+
+        Dimensions.addEventListener('change', update)
+
+        return () => Dimensions.removeEventListener('change', update)
+    })
+
+    let content = <View style={{ width: deviceWidth, marginTop: 15 }}>
         <FlatList
             data={todos}
             renderItem={({item}) => (
@@ -29,15 +42,11 @@ export const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
 }
 
 const styles = StyleSheet.create({
-    todoList: {
-        marginTop: 10,
-    },
     imgWrap: {
-        height: 300,
-        width: '100%',
-        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        justifyContent: 'center',
+        padding: 10,
+        height: 300
     },
     image: {
         height: '100%',
