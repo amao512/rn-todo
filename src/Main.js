@@ -9,23 +9,11 @@ import { TodoContext } from './context/todo/todoContext'
 
 export const Main = () => {
     const todoContext = useContext(TodoContext)
-    const [todoId, setTodoId] = useState(null)
     const [todos, setTodos] = useState([])
 
     useEffect(() => {
         setTodos(todoContext.todos)
     }, [todoContext])
-
-    const addTodo = title => {
-        if(!title.trim()){
-          return Alert.alert(
-            'Строка пустая',
-            'Пожалуйста напишите что-нибудь!'
-          )
-        }
-    
-        todoContext.addTodoDispatch({ id: Date.now(), title })
-    }
 
     const removeTodo = id => {
         const todo = todos.find(todo => todo.id === id)
@@ -41,8 +29,8 @@ export const Main = () => {
             {
                 text: 'Remove',
                 onPress: () => {
-                setTodoId(null)
-                todoContext.removeTodoDispatch(id)
+                    todoContext.setTodoId(null)
+                    todoContext.removeTodoDispatch(id)
                 }
             }
             ],
@@ -50,22 +38,19 @@ export const Main = () => {
         )
     }
 
-    const changeTodo = (id, title) => {
-        todoContext.changeTodoDispatch(id, title)
-    }
+    const changeTodo = (id, title) =>  todoContext.changeTodoDispatch(id, title)
 
     let content = <MainScreen 
                     todos={todos} 
-                    addTodo={addTodo} 
+                    addTodo={todoContext.addTodoDispatch} 
                     removeTodo={removeTodo} 
-                    openTodo={setTodoId}
+                    openTodo={todoContext.setTodoId}
                 />
 
-    if(todoId){
-        const todo = todos.find(todo => todo.id === todoId)
+    if(todoContext.todoId){
         content = <TodoScreen 
-                    todo={todo} 
-                    goBack={() => setTodoId(null)} 
+                    todo={todos.find(todo => todo.id === todoContext.todoId)} 
+                    goBack={() => todoContext.setTodoId(null)} 
                     removeTodo={removeTodo}
                     onSave={changeTodo}
                 />

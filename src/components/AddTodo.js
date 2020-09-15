@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TextInput, Button, StyleSheet, Keyboard } from 'react-native'
+import { View, TextInput, StyleSheet, Keyboard } from 'react-native'
 import { THEME } from '../theme'
 import { AntDesign } from '@expo/vector-icons'
 import { AppButton } from './ui/AppButton'
@@ -8,7 +8,14 @@ export const AddTodo = ({ addTodo }) => {
     const [value, setValue] = useState('')
 
     const onPress = () => {
-        addTodo(value)
+        if(!value.trim()){
+            return Alert.alert(
+              'Строка пустая',
+              'Пожалуйста напишите что-нибудь!'
+            )
+          }
+
+        addTodo({ id: Date.now(), title: value })
         setValue('')
         Keyboard.dismiss()
     }
