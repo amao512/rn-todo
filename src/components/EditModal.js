@@ -15,13 +15,18 @@ export const EditModal = ({ visible, onCancel, value, onSave }) => {
         }
     }
 
+    const cancelHandler = () => {
+        onCancel(false)
+        setTitle(value)
+    }
+
     return (
         <Modal visible={visible} animationType='slide' transparent={false}>
             <View style={styles.wrap}>
                 <TextInput style={styles.input} value={title} onChangeText={text => setTitle(text)} />
                 
                 <View style={styles.buttons}>
-                    <AppButton color={THEME.GREY_COLOR} onPress={() => onCancel(false)}>
+                    <AppButton color={THEME.GREY_COLOR} onPress={cancelHandler}>
                         <AntDesign name="back" size={24} color="#fff" />
                     </AppButton>
                     <AppButton onPress={saveHandler}>

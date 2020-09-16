@@ -1,9 +1,13 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useContext } from 'react'
 import { TodoContext } from './todoContext'
 import { todoReducer } from './todoReducer'
 import { ADD_TODO, REMOVE_TODO, CHANGE_TODO } from '../types'
+import { screenContext } from '../screen/screenContext'
+import { Alert } from 'react-native'
 
 export const TodoState = ({ children }) => {
+    const { setTodoId } = useContext(screenContext)
+
     const initialState = {
         todos: [{ id: Date.now(), title: 'Hello' }],
         todoId: null
@@ -11,11 +15,32 @@ export const TodoState = ({ children }) => {
 
     const [state, dispatch] = useReducer(todoReducer, initialState)
 
-    const addTodoDispatch = todo => dispatch({ type: ADD_TODO, todo })
-    const removeTodoDispatch = id => dispatch({ type: REMOVE_TODO, id })
-    const changeTodoDispatch = (id, title) => dispatch({ type: CHANGE_TODO, id, title })
+    const addTodo = todo => dispatch({ type: ADD_TODO, todo })
+    const removeTodo = id => {
+        const todo = state.todos.find(todo => todo.id === id)
 
-    const dispatches = { addTodoDispatch, removeTodoDispatch, changeTodoDispatch }
+        Alert.alert(
+            'Удаление элемента',
+            `Вы уверены что хотите удалить "${todo.title}"`,
+            [
+            {
+                text: 'Cancel',
+                style: 'cancel'
+            },
+            {
+                text: 'Remove',
+                onPress: () => {
+                    setTodoId(null)
+                    dispatch({ type: REMOVE_TODO, id })
+                }
+            }
+            ],
+            { cancelable: false }
+        )
+    }
+    const changeTodo = (id, title) => dispatch({ type: CHANGE_TODO, id, title })
+
+    const dispatches = { addTodo, removeTodo, changeTodo }
 
     return <TodoContext.Provider value={{...state, ...dispatches}}>{children}</TodoContext.Provider>
 }

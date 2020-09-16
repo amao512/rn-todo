@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, FlatList, StyleSheet, Image, Dimensions } from 'react-native'
 import { AddTodo } from '../components/AddTodo'
 import { Todo } from '../components/Todo'
 import { THEME } from '../theme'
+import { TodoContext } from '../context/todo/todoContext'
+import { screenContext } from '../context/screen/screenContext'
 
-export const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
+export const MainScreen = () => {
     const [deviceWidth, setDeviceWidth] = useState(Dimensions.get('window').width - THEME.PADDING_HORIZONTAL * 2)
+    const { todos, addTodo, removeTodo } = useContext(TodoContext)
+    const { setTodoId } = useContext(screenContext)
 
     useEffect(() => {
         const update = () => {
@@ -18,25 +22,23 @@ export const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
         return () => Dimensions.removeEventListener('change', update)
     })
 
-    let content = <View style={{ width: deviceWidth, marginTop: 15 }}>
-        <FlatList
-            data={todos}
-            renderItem={({item}) => (
-                <Todo todo={item} removeTodo={removeTodo} openTodo={openTodo} />
-            )}
-            keyExtractor={todo => todo.id.toString()}
-        />
-    </View>
-
-    if(todos.length === 0){
-        content = <View style={styles.imgWrap}><Image style={styles.imgWrap} source={require('../../assets/no-items.png')} /></View>
-    }
-
     return (
         <View>
             <AddTodo addTodo={addTodo} />
 
-            { content }
+            { todos.length === 0 ? (
+                    <View style={styles.imgWrap}><Image style={styles.imgWrap} source={require('../../assets/no-items.png')} /></View>
+                ) : (
+                    <View style={{ width: deviceWidth, marginTop: 15 }}>
+                        <FlatList
+                            data={todos}
+                            renderItem={({item}) => (
+                                <Todo todo={item} removeTodo={removeTodo} openTodo={setTodoId} />
+                            )}
+                            keyExtractor={todo => todo.id.toString()}
+                        />
+                    </View>
+                )}
         </View>
     )
 }

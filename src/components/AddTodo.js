@@ -13,7 +13,7 @@ export const AddTodo = ({ addTodo }) => {
               'Строка пустая',
               'Пожалуйста напишите что-нибудь!'
             )
-          }
+        }
 
         addTodo({ id: Date.now(), title: value })
         setValue('')
