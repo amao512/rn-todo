@@ -6,9 +6,11 @@ import { MainScreen } from './screens/MainScreen'
 import { TodoScreen } from './screens/TodoScreen'
 import { THEME } from './theme'
 import { TodoContext } from './context/todo/todoContext'
+import { screenContext } from './context/screen/screenContext'
 
 export const Main = () => {
     const todoContext = useContext(TodoContext)
+    const { todoId, setTodoId } = useContext(screenContext)
     const [todos, setTodos] = useState([])
 
     useEffect(() => {
@@ -29,7 +31,7 @@ export const Main = () => {
             {
                 text: 'Remove',
                 onPress: () => {
-                    todoContext.setTodoId(null)
+                    setTodoId(null)
                     todoContext.removeTodoDispatch(id)
                 }
             }
@@ -44,13 +46,13 @@ export const Main = () => {
                     todos={todos} 
                     addTodo={todoContext.addTodoDispatch} 
                     removeTodo={removeTodo} 
-                    openTodo={todoContext.setTodoId}
+                    openTodo={setTodoId}
                 />
 
-    if(todoContext.todoId){
+    if(todoId){
         content = <TodoScreen 
-                    todo={todos.find(todo => todo.id === todoContext.todoId)} 
-                    goBack={() => todoContext.setTodoId(null)} 
+                    todo={todos.find(todo => todo.id === todoId)} 
+                    goBack={() => setTodoId(null)} 
                     removeTodo={removeTodo}
                     onSave={changeTodo}
                 />

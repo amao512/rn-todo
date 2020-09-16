@@ -1,10 +1,6 @@
-import { ADD_TODO, REMOVE_TODO, CHANGE_TODO, SET_TODO_ID } from "../types"
+import { ADD_TODO, REMOVE_TODO, CHANGE_TODO } from "../types"
 
 const handlers = {
-    [SET_TODO_ID]: (state, { id }) => ({
-        ...state,
-        todoId: id
-    }),
     [ADD_TODO]: (state, { todo }) => ({
         ...state,
         todos: [...state.todos, todo]
