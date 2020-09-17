@@ -35,7 +35,7 @@ export const MainScreen = () => {
                             renderItem={({item}) => (
                                 <Todo todo={item} removeTodo={removeTodo} openTodo={setTodoId} />
                             )}
-                            keyExtractor={todo => todo.id.toString()}
+                            keyExtractor={todo => todo.id}
                         />
                     </View>
                 )}

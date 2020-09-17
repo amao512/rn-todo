@@ -15,7 +15,7 @@ export const AddTodo = ({ addTodo }) => {
             )
         }
 
-        addTodo({ id: Date.now(), title: value })
+        addTodo(value)
         setValue('')
         Keyboard.dismiss()
     }

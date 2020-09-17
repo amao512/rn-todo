@@ -1,9 +1,9 @@
-import { ADD_TODO, REMOVE_TODO, CHANGE_TODO } from "../types"
+import { ADD_TODO, REMOVE_TODO, CHANGE_TODO, SHOW_LOADER, HIDE_LOADER, SHOW_ERROR, CLEAR_ERROR } from "../types"
 
 const handlers = {
-    [ADD_TODO]: (state, { todo }) => ({
+    [ADD_TODO]: (state, { title, id }) => ({
         ...state,
-        todos: [...state.todos, todo]
+        todos: [...state.todos, { id, title }]
     }),
     [REMOVE_TODO]: (state, { id }) => ({
         ...state,
@@ -19,6 +19,10 @@ const handlers = {
             return todo
         })
     }),
+    [SHOW_LOADER]: state => ({ ...state, loading: true }),
+    [HIDE_LOADER]: state => ({ ...state, loading: false }),
+    [SHOW_ERROR]: (state, { error }) => ({ ...state, error }),
+    [CLEAR_ERROR]: state => ({ ...state, error: null }),
     DEFAULT: state => state
 }
 
