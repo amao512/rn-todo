@@ -11,7 +11,7 @@ export const Main = () => {
     const { todoId } = useContext(screenContext)
 
     return (
-        <View>
+        <View style={styles.wrap}>
             <StatusBar style="auto" backgroundColor={THEME.MAIN_COLOR} />
 
             <Navbar />
@@ -23,8 +23,12 @@ export const Main = () => {
 }
 
 const styles = StyleSheet.create({
+    wrap: {
+        flex: 1
+    },
     container: {
       paddingHorizontal: THEME.PADDING_HORIZONTAL,
-      paddingVertical: 20
-    }
+      paddingVertical: 20,
+      flex: 1
+    },
 })

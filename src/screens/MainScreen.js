@@ -5,10 +5,13 @@ import { Todo } from '../components/Todo'
 import { THEME } from '../theme'
 import { TodoContext } from '../context/todo/todoContext'
 import { screenContext } from '../context/screen/screenContext'
+import { AppLoader } from '../components/ui/AppLoader'
+import { AppText } from '../components/ui/AppText'
+import { AppButton } from '../components/ui/AppButton'
 
 export const MainScreen = () => {
     const [deviceWidth, setDeviceWidth] = useState(Dimensions.get('window').width - THEME.PADDING_HORIZONTAL * 2)
-    const { todos, addTodo, removeTodo, fetchTodos } = useContext(TodoContext)
+    const { todos, addTodo, removeTodo, fetchTodos, loading, error } = useContext(TodoContext)
     const { setTodoId } = useContext(screenContext)
 
     const loadTodos = useCallback(async () => fetchTodos(), [fetchTodos])
@@ -27,6 +30,19 @@ export const MainScreen = () => {
 
         return () => Dimensions.removeEventListener('change', update)
     })
+
+    if(loading){
+        return <AppLoader />
+    }
+
+    if(error){
+        return (
+            <View style={styles.center}>
+                <AppText style={styles.error}>{error}</AppText>
+                <AppButton onPress={loadTodos}>Again</AppButton>
+            </View>
+        )
+    }
 
     return (
         <View>
@@ -60,5 +76,15 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         resizeMode: 'contain',
+    },
+    center: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    error: {
+        color: THEME.DANGER_COLOR,
+        fontSize: 20,
+        marginBottom: 10
     }
 })

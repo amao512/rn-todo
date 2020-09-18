@@ -28,7 +28,7 @@ export const TodoState = ({ children }) => {
         dispatch({ type: ADD_TODO, title, id: data.name })
     }
 
-    const removeTodo = async id => {
+    const removeTodo = id => {
         const todo = state.todos.find(todo => todo.id === id)
 
         Alert.alert(
@@ -41,13 +41,23 @@ export const TodoState = ({ children }) => {
             },
             {
                 text: 'Remove',
-                onPress: () => {
-                    setTodoId(null)
-                    // fetch(`https://rn-todo-app-53385.firebaseio.com/todos.json/${id}`, {
-                    //     method: 'DELETE',
-                    //     headers: { 'Content-Type': 'application/json' }
-                    // })
-                    dispatch({ type: REMOVE_TODO, id })
+                onPress: async () => {
+                    try {
+                        clearError()
+    
+                        await fetch(`https://rn-todo-app-53385.firebaseio.com/todos/${id}.json`, {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+
+                        setTodoId(null)
+                        dispatch({ type: REMOVE_TODO, id })   
+                    } catch (error) {
+                        showError('Something went wrong...')
+                        console.log(error)
+                    } finally {
+                        hideLoader()
+                    }
                 }
             }
             ],
@@ -55,16 +65,42 @@ export const TodoState = ({ children }) => {
         )
     }
 
-    const changeTodo = (id, title) => dispatch({ type: CHANGE_TODO, id, title })
+    const changeTodo = async (id, title) => {
+        try {
+            clearError()
+            await fetch(`https://rn-todo-app-53385.firebaseio.com/todos/${id}.json`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title })
+            })
+
+            dispatch({ type: CHANGE_TODO, id, title })
+        } catch (error) {
+            showError('Something went wrong...')
+            console.log(error)
+        } finally {
+            hideLoader()
+        }
+    }
 
     const fetchTodos = async () => {
-        const res = await fetch('https://rn-todo-app-53385.firebaseio.com/todos.json', { 
-            headers: { 'Content-Type': 'application/json' } 
-        })
-        const data = await res.json()
-        const todos = Object.keys(data).map(key => ({ ...data[key], id: key }))
+        try {
+            showLoader()
+            clearError()
 
-        dispatch({ type: FETCH_TODOS, todos })
+            const res = await fetch('https://rn-todo-app-53385.firebaseio.com/todos.json', { 
+                headers: { 'Content-Type': 'application/json' } 
+            })
+            const data = await res.json()
+            const todos = Object.keys(data).map(key => ({ ...data[key], id: key }))
+
+            dispatch({ type: FETCH_TODOS, todos })            
+        } catch (error) {
+            showError('Something went wrong...')
+            console.log(error)
+        } finally {
+            hideLoader()
+        }
     }
 
     const showLoader = () => dispatch({ type: SHOW_LOADER })

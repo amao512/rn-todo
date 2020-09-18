@@ -16,8 +16,8 @@ export const EditModal = ({ visible, onCancel, value, onSave }) => {
     }
 
     const cancelHandler = () => {
-        onCancel(false)
         setTitle(value)
+        onCancel(false)
     }
 
     return (

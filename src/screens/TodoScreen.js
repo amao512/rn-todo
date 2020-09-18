@@ -16,8 +16,8 @@ export const TodoScreen = () => {
 
     const todo = todos.find(todo => todo.id === todoId)
 
-    const saveHandler = title => {
-        changeTodo(todo.id, title)
+    const saveHandler = async title => {
+        await changeTodo(todo.id, title)
         setModal(false)
     }
 
